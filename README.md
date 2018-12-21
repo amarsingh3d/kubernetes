@@ -33,3 +33,5 @@ Open Powershell Run as administrator:
 ```
 PS C:\> Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
+Command output should be like this, there are some warnings, you can ignore them.
+!.[image].(https://4.bp.blogspot.com/-S4CmYNfZMjo/XBOa12vUoHI/AAAAAAAAE6U/9j3v-A7tsAUiSjPR18Oji9Nkl46sDtJawCLcBGAs/s1600/choco.jpg)
