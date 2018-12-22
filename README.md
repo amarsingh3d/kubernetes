@@ -11,11 +11,16 @@ Build Single Node kubernetes Cluster using MiniKube
 
 **DNS
 *Node Port
+
 *Dashboard
+
 *Enable CNI (container Network Interface)
+
 ConfigMap and Secrets
-Ingress
-Container Runtime: Docker, rkt, CRI-O and container**
+
+**Ingress**
+
+**Container Runtime: Docker, rkt, CRI-O and container**
 
 **Prerequisites:**
 A Windows Machine with admin access
