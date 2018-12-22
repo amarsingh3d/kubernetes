@@ -9,24 +9,27 @@ Build Single Node kubernetes Cluster using MiniKube
 
 **Kubernetes Features in MiniKube:** 
 
-**DNS
-*Node Port
+ -DNS
+ -Node Port
 
-*Dashboard
+ -Dashboard
 
-*Enable CNI (container Network Interface)
+ -Enable CNI (container Network Interface)
 
-ConfigMap and Secrets
+ -ConfigMap and Secrets
 
-**Ingress**
+ -Ingress**
 
-**Container Runtime: Docker, rkt, CRI-O and container**
+ -Container Runtime: Docker, rkt, CRI-O and container**
 
 **Prerequisites:**
-A Windows Machine with admin access
-Installed Virtual box in Windows machine
-Installed Powershell 
-VT-x or AMD-v Virtualization enabled
+-A Windows Machine with admin access
+
+-Installed Virtual box in Windows machine
+
+-Installed Powershell 
+
+-VT-x or AMD-v Virtualization enabled
 
 **Installation:** 
 Follow the steps below for the installation steps:
