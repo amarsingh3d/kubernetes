@@ -7,20 +7,22 @@ Build Single Node kubernetes Cluster using MiniKube
 
 ![image](https://1.bp.blogspot.com/-CXWywEZuyFo/XBixFEQSeKI/AAAAAAAAE80/mV8oIHCQrQwtu9fijU374IFJ_VYdGkEKwCLcBGAs/s1600/kubernetes.jpg)
 
-**Kubernetes Features in MiniKube: 
+**Kubernetes Features in MiniKube:** 
 
-DNS
-Node Port
-Dashboard
-Enable CNI (container Network Interface)
+**DNS
+*Node Port
+*Dashboard
+*Enable CNI (container Network Interface)
 ConfigMap and Secrets
 Ingress
-Container Runtime: Docker, rkt, CRI-O and container 
+Container Runtime: Docker, rkt, CRI-O and container**
+
 **Prerequisites:**
 A Windows Machine with admin access
 Installed Virtual box in Windows machine
 Installed Powershell 
 VT-x or AMD-v Virtualization enabled
+
 **Installation:** 
 Follow the steps below for the installation steps:
 
@@ -91,9 +93,9 @@ PS C:\> kubectl run web --image=httpd:2.4 --port=80
 **Where:**
 ```
   Kubectl  run              -            command to create a deployment
-  web                          -            Deployment name
---image=httpd2.4         -            To define docker image path
---port=80                    -             Define port on which your app running.
+  web                       -            Deployment name
+--image=httpd2.4            -            To define docker image path
+--port=80                   -            Define port on which your app running.
 ```
 
 Verify created Deployment:
@@ -107,8 +109,8 @@ Check created pods:
 ```
 PS C:\> kubectl get pods
 
-NAME                       READY     STATUS       RESTARTS       AGE
-web-c86cff74-r9rpb   1/1          Running       0                    45s
+NAME                 READY     STATUS       RESTARTS       AGE
+web-c86cff74-r9rpb   1/1       Running       0             45s
  ```
  our deployment created successfully and the pod is available and running.
 **Step 7- Create Service to expose deployment using type NodePort:**
@@ -121,9 +123,9 @@ Let's verify exposed service.
 PS C:\> kubectl get service 
 
 
-NAME               TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)              AGE
-kubernetes       ClusterIP      10.96.0.1          <none>           443/TCP            16d
-webservice       NodePort      10.101.114.59   <none>           80:31178/TCP   9s
+NAME               TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)              AGE
+kubernetes       ClusterIP      10.96.0.1          <none>           443/TCP              16d
+webservice       NodePort       10.101.114.59       <none>          80:31178/TCP         9s
 ```
 Deployment exposed successfully for external access. 
 
@@ -138,8 +140,8 @@ My Minikube IP address is 192.168.99.100. Now, let's check our exposed service p
 ```
 PS C:\> kubectl get service 
 
-NAME           TYPE           CLUSTER-IP         EXTERNAL-IP   PORT(S)         AGE
-webservice   NodePort    10.101.114.59       <none>          80:31178/TCP   6m
+NAME           TYPE           CLUSTER-IP         EXTERNAL-IP      PORT(S)         AGE
+webservice   NodePort         10.101.114.59       <none>          80:31178/TCP    6m
 ```
 So, our exposed deployment running with port 31178. Now Open browser and hit minikube IP and Port 31178 to check external access. 
 ![image](https://2.bp.blogspot.com/-HSGj6D9gXNE/XBijNin-iHI/AAAAAAAAE8Q/xmA-e3MYjo0orVYfCi-bVKo-JxJTACcyACLcBGAs/s640/m.jpg)
@@ -154,10 +156,10 @@ Verified created service:
 ```
 PS C:\> kubectl get service
 
-NAME           TYPE           CLUSTER-IP         EXTERNAL-IP         PORT(S)        AGE
-kubernetes     ClusterIP      10.96.0.1          <none>                443/TCP        16d
-webservice     NodePort       10.101.114.59  <none>               80:31178/TCP   17m
-webservicelb   LoadBalancer   10.100.184.197   <pending>     80:30484/TCP   11s
+NAME           TYPE           CLUSTER-IP         EXTERNAL-IP           PORT(S)        AGE
+kubernetes     ClusterIP      10.96.0.1           <none>               443/TCP        16d
+webservice     NodePort       10.101.114.59       <none>               80:31178/TCP   17m
+webservicelb   LoadBalancer   10.100.184.197      <pending>            80:30484/TCP   11s
 ```
 Deployment exposed using service type LoadBalancer. Let's verify external access using minikube IP and LoadBalancer port (30484)
 ![image](https://3.bp.blogspot.com/-HoL41SvENhc/XBilorsCK8I/AAAAAAAAE8c/ITM_qvTlZOwyqQSFLVou4tBD7B8cWL_QACLcBGAs/s640/m1.jpg)
@@ -172,18 +174,18 @@ let's verify running pods using the command below.
 ```
 PS C:\> kubectl get pods
 
-NAME                           READY       STATUS                    RESTARTS       AGE
-web-c86cff74-qntmh       0/1           ContainerCreating        0                 10s
-web-c86cff74-r9rpb         1/1           running                       0                 33m
+NAME                     READY          STATUS                    RESTARTS            AGE
+web-c86cff74-qntmh       0/1           ContainerCreating             0                 10s
+web-c86cff74-r9rpb       1/1           running                       0                 33m
 ```
 We just scaled our deployment and you can see new Pod creation is in progress. Run above command again to verify that both pods are available and running.
 
 ```
 PS C:\> kubectl get pods
 
-NAME                              READY   STATUS       RESTARTS   AGE
+NAME                      READY        STATUS        RESTARTS        AGE
 web-c86cff74-qntmh        1/1         Running         0              2m
-web-c86cff74-r9rpb         1/1         Running         0               35m
+web-c86cff74-r9rpb        1/1         Running         0              35m
 ```
 Verified and our second pod available and running. 
 
@@ -197,7 +199,7 @@ PS C:\> kubectl delete service/webservicelb
 **Where**
 ```
 Kubectl  delete                               - is a command
-Service                                          -  is a command
+Service                                       -  is a command
 webservicelb                                  -  is your service name
 ```
 **Step 11- Delete Deployment:**
