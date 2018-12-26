@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: apachedeploy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web  
+    spec:
+      containers:
+        - name: web
+          image: amarsingh3d/apache2.4-php7.2
+          ports:
+            - containerPort: 80
