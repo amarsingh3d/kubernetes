@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-apache-web
+  #annotations:
+  #  apache.ingress.kubernetes.io/rewrite-target: /  
+spec:
+  #ingressClassName: apache-servicea
+  rules:
+    - host: apache.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 80
