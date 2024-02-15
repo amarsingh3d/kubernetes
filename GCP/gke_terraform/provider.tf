@@ -14,3 +14,11 @@ terraform {
 
   required_version = ">= 0.14"
 }
+
+terraform {
+  backend "gcs" {
+    bucket               = "tf-storage-011"
+    prefix                  = "workspaces"
+    
+  }
+}
