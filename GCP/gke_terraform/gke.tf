@@ -1,3 +1,7 @@
+locals {
+  environment = terraform.workspace
+}
+
 # GKE cluster
 data "google_container_engine_versions" "gke_version" {
   location       = var.region
@@ -5,12 +9,12 @@ data "google_container_engine_versions" "gke_version" {
 }
 
 resource "google_service_account" "default" {
-  account_id   = "${var.environment}-${var.application}-service-id"
-  display_name = "${var.environment}-${var.application}-Service Account"
+  account_id   = "${local.environment}-${var.application}-service-id"
+  display_name = "${local.environment}-${var.application}-Service Account"
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "${var.environment}-${var.application}-cluster"
+  name     = "${local.environment}-${var.application}-cluster"
   location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -25,7 +29,7 @@ resource "google_container_cluster" "primary" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name     = "${var.environment}-${var.application}-node-pool"
+  name     = "${local.environment}-${var.application}-node-pool"
   location = var.region
   cluster  = google_container_cluster.primary.name
 
@@ -44,7 +48,7 @@ resource "google_container_node_pool" "primary_nodes" {
 
     # preemptible  = true
     machine_type = var.machine_type
-    tags         = ["gke-node", "${var.environment}-${var.application}-gke"]
+    tags         = ["gke-node", "${local.environment}-${var.application}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }
