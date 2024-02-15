@@ -1,5 +1,5 @@
 project_id    = "exemplary-point-412614"
-region        = "us-central1"
+region        = "us-east1"
 application   = "gke"
 gke_num_nodes = "2"
 gke_version   = "1.27."
