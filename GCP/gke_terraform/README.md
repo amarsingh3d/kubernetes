@@ -64,8 +64,14 @@ terraform init
 ```
 terrafrom plan -var-file=dev.tfvars
 ```
+
+- Terraform apply
+```
+terraform apply -var-file=dev.tfvars
+
+
 # To Create Prod infra run following command.
-- Switch to dev workspae
+- Switch to prod workspae
 ```
 terraform workspace select prod
 ```
@@ -77,7 +83,9 @@ terraform init
 ```
 terrafrom plan -var-file=prod.tfvars
 ```
-
+- Terraform apply
+```
+terraform apply -var-file=prod.tfvars
 
 
 **Kubernetes:** Kubernetes is an open source system for automatic deployment, scaling, and management of containerized applications.
