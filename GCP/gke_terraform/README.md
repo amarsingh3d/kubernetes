@@ -86,7 +86,7 @@ terrafrom plan -var-file=prod.tfvars
 - Terraform apply
 ```
 terraform apply -var-file=prod.tfvars
-
+```
 
 **Kubernetes:** Kubernetes is an open source system for automatic deployment, scaling, and management of containerized applications.
 
