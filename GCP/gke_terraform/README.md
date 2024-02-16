@@ -68,22 +68,26 @@ terrafrom plan -var-file=dev.tfvars
 - Terraform apply
 ```
 terraform apply -var-file=dev.tfvars
-
+```
 
 # To Create Prod infra run following command.
 - Switch to prod workspae
+
 ```
 terraform workspace select prod
 ```
 - Run terraform init if not done already
+
 ```
 terraform init
 ```
 - Run terraform plan with prod.tfvars file
+
 ```
 terrafrom plan -var-file=prod.tfvars
 ```
 - Terraform apply
+
 ```
 terraform apply -var-file=prod.tfvars
 ```
