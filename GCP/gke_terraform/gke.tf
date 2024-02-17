@@ -28,11 +28,15 @@ resource "google_container_cluster" "primary" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${local.environment}-${var.application}-node-pool"
-  location   = var.region
-  cluster    = google_container_cluster.primary.name
-  version    = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
-  node_count = var.gke_num_nodes
+  name           = "${local.environment}-${var.application}-node-pool"
+  location       = var.region
+  cluster        = google_container_cluster.primary.name
+  version        = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
+  node_locations = var.node_location
+  autoscaling {
+    min_node_count = var.min_num_nodes
+    max_node_count = var.max_num_nodes
+  }
 
   node_config {
     disk_size_gb = var.node_disk_size
