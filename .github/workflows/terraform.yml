@@ -16,6 +16,7 @@ jobs:
     if: github.event_name == 'push' && github.ref_name == 'dev'
     env:
       environment: ${{ github.ref_name }}
+      workspace: ${{ github.ref_name }}
       
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -40,9 +41,16 @@ jobs:
          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
         
     
+    # Switch to Workspace
+    - name: Terraform workspace select
+      working-directory: ./GCP/gke_terraform
+      run: |
+        terraform workspace new ${{ github.ref_name }}
+        terraform workspace select ${{ github.ref_name }}
+        
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init for fmt and validation      
+    - name: Terraform Init
       working-directory: ./GCP/gke_terraform
       run: terraform init -backend=false
     
@@ -53,19 +61,14 @@ jobs:
         terraform validate
         terraform fmt -check
 
-    # Switch to Workspace
-    - name: Terraform workspace select
-      working-directory: ./GCP/gke_terraform
-      run: |
-        terraform workspace new ${{ github.ref_name }}
-        terraform workspace select ${{ github.ref_name }}
-        terraform init -reconfigure
+
     
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      working-directory: ./GCP/gke_terraform
       run: terraform plan -var-file=dev.tfvars -input=false
 
       # On push to "master", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply      
-      run: terraform apply -auto-approve -input=false
+    # - name: Terraform Apply      
+    #   run: terraform apply -auto-approve -input=false
