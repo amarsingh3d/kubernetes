@@ -39,12 +39,6 @@ jobs:
       with:
          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
     
-    # Switch to Workspace
-    - name: Terraform workspace select
-      working-directory: ./GCP/gke_terraform
-      run: |
-        terraform workspace new ${{ github.ref_name }}
-        terraform workspace select ${{ github.ref_name }}
     
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format and Validate
@@ -57,6 +51,12 @@ jobs:
     - name: Terraform Init      
       run: terraform init -backend=false
 
+    # Switch to Workspace
+    - name: Terraform workspace select
+      working-directory: ./GCP/gke_terraform
+      run: |
+        terraform workspace new ${{ github.ref_name }}
+        terraform workspace select ${{ github.ref_name }}
     
     # Generates an execution plan for Terraform
     - name: Terraform Plan
