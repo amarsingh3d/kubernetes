@@ -16,7 +16,7 @@ jobs:
     if: github.event_name == 'push' && github.ref_name == 'dev'
     env:
       environment: ${{ github.ref_name }}
-      workspace: dev
+      
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -41,22 +41,25 @@ jobs:
     
     # Switch to Workspace
     - name: Terraform workspace select
+      working-directory: ./GCP/gke_terraform
       run: |
         terraform workspace new ${{ github.ref_name }}
         terraform workspace select ${{ github.ref_name }}
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      working-directory: ./GCP/gke_terraform
-      run: terraform init
-
+    
     # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
+    - name: Terraform Format and Validate
       working-directory: ./GCP/gke_terraform
-      run: terraform fmt -check
+      run: |
+        terraform validate
+        terraform fmt -check
 
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init      
+      run: terraform init -backend=false
+
+    
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      working-directory: ./GCP/gke_terraform
       run: terraform plan -var-file=dev.tfvars -input=false
 
       # On push to "master", build or change infrastructure according to Terraform configuration files
