@@ -56,8 +56,8 @@ jobs:
     - name: Terraform workspace select
       working-directory: ./GCP/gke_terraform
       run: |
-        terraform workspace new ${{ github.ref_name }}
-        terraform workspace select ${{ github.ref_name }}        
+       terraform workspace select ${{ github.ref_name }}  || terraform workspace new ${{ github.ref_name }}
+              
 
 
     
