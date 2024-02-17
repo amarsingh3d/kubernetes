@@ -37,6 +37,16 @@ resource "google_container_node_pool" "primary_nodes" {
     min_node_count = var.min_num_nodes
     max_node_count = var.max_num_nodes
   }
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+
+  }
+  upgrade_settings {
+    max_surge       = "1"
+    max_unavailable = "1"
+
+  }
 
   node_config {
     disk_size_gb = var.node_disk_size
@@ -51,7 +61,7 @@ resource "google_container_node_pool" "primary_nodes" {
 
     # preemptible  = true
     machine_type = var.machine_type
-    tags         = ["gke-node", "${local.environment}-${var.application}-gke"]
+    tags         = ["gke-node", "${local.environment}-${var.application}"]
     metadata = {
       disable-legacy-endpoints = "true"
     }

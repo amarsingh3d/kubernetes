@@ -1,4 +1,4 @@
-
+# This workflow will  GKE for different environment i.e dev or prod. when there is a push to the "dev or prod" branch.
 name: 'Setup GKE using Terraform'
 
 on:
@@ -33,7 +33,7 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
-    #  Alternative option - authentication via credentials json
+    #   option - authentication via credentials json
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v2'

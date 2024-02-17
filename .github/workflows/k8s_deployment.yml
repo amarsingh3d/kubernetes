@@ -1,0 +1,59 @@
+# This workflow will create/update deployment,service  to environment based GKE cluster when there is a push to the "dev" or "prod" branch.
+name: 'GKE deployment'
+
+on:
+  push:
+    branches: [ "dev","prod" ]
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dev-gke-cluster    # TODO: update to cluster name
+  GKE_ZONE: us-central1   # TODO: update to cluster zone
+  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
+
+permissions:
+  contents: read
+
+jobs:
+  dev:
+    name: 'Deploy to Dev GKE Environment'
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref_name == 'dev'
+    env:
+      environment: ${{ github.ref_name }}     
+      
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    #  option - authentication via credentials json
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v2'
+      with:
+         credentials_json: '${{ secrets.GCP_CREDENTIALS }}' 
+
+    - name: Set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v0
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+
+    - name: Set up Kustomize
+      run: |-
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      working-directory: ./complete-example
+      run: |-             
+        
+        kubectl apply -f deployment.yml
+        kubectl apply -f service.yml
+        kubectl get services -o wide
