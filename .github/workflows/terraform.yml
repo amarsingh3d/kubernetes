@@ -36,7 +36,7 @@ jobs:
     #  Alternative option - authentication via credentials json
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
+      uses: 'google-github-actions/auth@v2'
       with:
          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'              
 
@@ -95,7 +95,7 @@ jobs:
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v2
 
     #  Alternative option - authentication via credentials json
     - id: 'auth'
