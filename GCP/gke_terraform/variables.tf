@@ -44,11 +44,11 @@ variable "machine_type" {
 }
 
 variable "ip_cidr_range" {
-    default = ""
-  
+  default = ""
+
 }
 
 variable "node_disk_size" {
-    default = ""
-    
+  default = ""
+
 }
