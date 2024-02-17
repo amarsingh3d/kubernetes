@@ -6,3 +6,6 @@ gke_num_nodes  = "1"
 gke_version    = "1.27."
 machine_type   = "n1-standard-1"
 node_disk_size = "20"
+node_location  = ["us-central1-c", "us-central1-b"]
+min_num_nodes  = "1"
+max_num_nodes  = "1"
