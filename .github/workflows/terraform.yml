@@ -1,0 +1,137 @@
+
+name: 'Setup GKE using Terraform'
+
+on:
+  push:
+    branches: [ "dev","prod" ]
+
+
+permissions:
+  contents: read
+
+jobs:
+  dev:
+    name: 'Deploy to Dev Environment'
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref_name == 'dev'
+    env:
+      environment: ${{ github.ref_name }}
+      workspace: ${{ github.ref_name }}
+      
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    #  Alternative option - authentication via credentials json
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'              
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      working-directory: ./GCP/gke_terraform
+      run: terraform init
+    
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format and Validate
+      working-directory: ./GCP/gke_terraform
+      run: |
+        terraform validate
+        terraform fmt -check
+
+    # Switch to Workspace
+    - name: Terraform workspace select
+      working-directory: ./GCP/gke_terraform
+      run: |
+       terraform workspace select ${{ github.ref_name }}  || terraform workspace new ${{ github.ref_name }}
+              
+
+
+    
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      working-directory: ./GCP/gke_terraform
+      run: terraform plan -var-file=${{ github.ref_name }}.tfvars
+    
+    # Apply Terraform Changes 
+    - name: Terraform Apply
+      working-directory: ./GCP/gke_terraform
+      run: terraform apply -var-file=${{ github.ref_name }}.tfvars -auto-approve
+
+    #################################################
+    #          Prod Deployment Job                  #
+    #################################################
+  Prod:
+    name: 'Deploy to Prod Environment'
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref_name == 'prod'
+    env:
+      environment: ${{ github.ref_name }}
+      workspace: ${{ github.ref_name }}
+      
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    #  Alternative option - authentication via credentials json
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'              
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      working-directory: ./GCP/gke_terraform
+      run: terraform init
+    
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format and Validate
+      working-directory: ./GCP/gke_terraform
+      run: |
+        terraform validate
+        terraform fmt -check
+
+    # Switch to Workspace
+    - name: Terraform workspace select
+      working-directory: ./GCP/gke_terraform
+      run: |
+       terraform workspace select ${{ github.ref_name }}  || terraform workspace new ${{ github.ref_name }}
+              
+
+
+    
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      working-directory: ./GCP/gke_terraform
+      run: terraform plan -var-file=${{ github.ref_name }}.tfvars
+    
+    # Apply Terraform Changes 
+    - name: Terraform Apply
+      working-directory: ./GCP/gke_terraform
+      run: terraform apply -var-file=${{ github.ref_name }}.tfvars -auto-approve
+      

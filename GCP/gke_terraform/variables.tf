@@ -38,8 +38,41 @@ variable "gke_version" {
 }
 
 variable "machine_type" {
-  type    = string
-  default = ""
+  description = "Machine type"
+  type        = string
+  default     = ""
 
 }
 
+variable "ip_cidr_range" {
+  description = "IP CIDR for VPC"
+  type        = string
+  default     = ""
+
+}
+
+variable "node_disk_size" {
+  description = "Node disk size"
+  type        = string
+  default     = ""
+
+}
+variable "node_location" {
+  description = "GKE node location"
+  type        = list(string)
+  default     = [""]
+
+}
+
+variable "min_num_nodes" {
+  description = "No of min node in node group"
+  type        = number
+  default     = "1"
+
+}
+variable "max_num_nodes" {
+  description = "max node count in node group"
+  type        = number
+  default     = "1"
+
+}

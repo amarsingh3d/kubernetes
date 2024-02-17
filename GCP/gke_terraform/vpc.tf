@@ -9,7 +9,7 @@ resource "google_compute_subnetwork" "node_subnet" {
   name          = "${local.environment}-${var.application}-node-subnet"
   region        = var.region
   network       = google_compute_network.vpc.name
-  ip_cidr_range = "10.0.0.0/16"
+  ip_cidr_range = var.ip_cidr_range
 }
 
 # # Subnet Cluster

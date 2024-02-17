@@ -22,19 +22,24 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
-  network    = google_compute_network.vpc.name
-  subnetwork = google_compute_subnetwork.node_subnet.name
+  network                  = google_compute_network.vpc.name
+  subnetwork               = google_compute_subnetwork.node_subnet.name
 }
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name     = "${local.environment}-${var.application}-node-pool"
-  location = var.region
-  cluster  = google_container_cluster.primary.name 
-  version    = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
-  node_count = var.gke_num_nodes
+  name           = "${local.environment}-${var.application}-node-pool"
+  location       = var.region
+  cluster        = google_container_cluster.primary.name
+  version        = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
+  node_locations = var.node_location
+  autoscaling {
+    min_node_count = var.min_num_nodes
+    max_node_count = var.max_num_nodes
+  }
 
   node_config {
+    disk_size_gb = var.node_disk_size
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",

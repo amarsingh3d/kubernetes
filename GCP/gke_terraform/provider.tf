@@ -17,8 +17,8 @@ terraform {
 
 terraform {
   backend "gcs" {
-    bucket               = "tf-storage-011"
-    prefix                  = "workspaces"
-    
+    bucket = "tf-storage-011"
+    prefix = "workspaces"
+
   }
 }
