@@ -38,7 +38,12 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        
     
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init      
+      run: terraform init -backend=false
     
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format and Validate
@@ -46,11 +51,7 @@ jobs:
       run: |
         terraform validate
         terraform fmt -check
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init      
-      run: terraform init -backend=false
-
+        
     # Switch to Workspace
     - name: Terraform workspace select
       working-directory: ./GCP/gke_terraform
