@@ -59,7 +59,7 @@ jobs:
       run: |
         terraform workspace new ${{ github.ref_name }}
         terraform workspace select ${{ github.ref_name }}
-        terraform init -backend=false
+        terraform init
     
     # Generates an execution plan for Terraform
     - name: Terraform Plan
