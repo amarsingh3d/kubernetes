@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: default
+  labels:
+    app: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      securityContext:
+            fsGroup: 1000 
+            runAsUser: 1000
+      containers:
+      - name: jenkins
+        image: jenkins/jenkins
+        ports:
+        - containerPort: 8080
+        resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+            requests:
+              memory: "500Mi"
+              cpu: "500m"
+        volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home 
+              subPath: jenkins_home         
+      volumes:
+        - name: jenkins-data
+          persistentVolumeClaim:
+              claimName: jenkins-disk      

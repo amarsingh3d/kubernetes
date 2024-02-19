@@ -94,3 +94,7 @@ terraform apply -var-file=prod.tfvars
 
 **Kubernetes:** Kubernetes is an open source system for automatic deployment, scaling, and management of containerized applications.
 
+Get Cluster credentials
+```
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw egion)
+```
