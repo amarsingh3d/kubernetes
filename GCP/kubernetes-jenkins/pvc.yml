@@ -1,12 +1,26 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-existing-disk
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: jenkins-data-volume
+    fsType: ext4
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jenkins-disk
-  namespace: default
+  name: pvc-existiting-disk
 spec:
+  storageClassName: ""
+  volumeName: pv-existing-disk
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
-  storageClassName: standard-rwo

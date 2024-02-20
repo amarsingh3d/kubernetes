@@ -17,7 +17,11 @@ git clone -b dev git@github.com:amarsingh3d/kubernetes.git
 ```
 cd kubernetes/GCP/kubernetes-jenkins
 ```
-
+- Create A storage disk with name jenkins-data-volume that willl be use to store data
+```
+ gcloud compute disks create jenkins-data-volume --zone us-central1-c --size 20
+ 
+ ```
 - Create PVC 
 ```
 kubectl apply -f pvc.yml

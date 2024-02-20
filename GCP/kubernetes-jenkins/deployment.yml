@@ -26,15 +26,14 @@ spec:
         resources:
             limits:
               memory: "2Gi"
-              cpu: "1000m"
+              cpu: "200m"
             requests:
               memory: "500Mi"
-              cpu: "500m"
+              cpu: "100m"
         volumeMounts:
             - name: jenkins-data
-              mountPath: /var/jenkins_home 
-              subPath: jenkins_home         
+              mountPath: /var/jenkins_home  
       volumes:
         - name: jenkins-data
           persistentVolumeClaim:
-              claimName: jenkins-disk      
+              claimName: pvc-existiting-disk     
