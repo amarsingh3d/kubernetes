@@ -11,8 +11,8 @@ on:
   pull_request:
     branches: [ "tfsec" ]
   schedule:
-    - cron: '59 09 * * *'
-    - timezone: 'Asia/Kolkata'
+    - cron: '32 04 * * *'
+    
 
 jobs:
   tfsec:
